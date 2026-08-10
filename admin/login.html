@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion — Administration Projet Jardin</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="page-connexion">
+
+  <a href="../index.html" class="lien-retour-site">← Retour au site</a>
+
+  <main class="carte-connexion">
+    <img src="../assets/logo.png" alt="Projet Jardin" class="logo">
+    <h1>Espace administrateur</h1>
+    <p class="sous-titre">Connecte-toi pour gérer clients, devis et factures.</p>
+
+    <form id="formulaire-connexion" class="formulaire-admin" style="text-align:left;">
+      <div class="champ">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <div class="champ">
+        <label for="mot-de-passe">Mot de passe</label>
+        <input type="password" id="mot-de-passe" name="mot-de-passe" required autocomplete="current-password">
+      </div>
+      <p id="erreur-connexion" class="erreur-champ" role="alert"></p>
+      <button type="submit" class="bouton bouton-principal" id="bouton-connexion" style="justify-content:center;">
+        Se connecter
+      </button>
+    </form>
+  </main>
+
+  <script type="module">
+    import { connexion, redirigerSiDejaConnecte } from '../js/auth.js';
+
+    redirigerSiDejaConnecte();
+
+    const formulaire = document.querySelector('#formulaire-connexion');
+    const boutonConnexion = document.querySelector('#bouton-connexion');
+    const erreur = document.querySelector('#erreur-connexion');
+
+    formulaire.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      erreur.textContent = '';
+      boutonConnexion.disabled = true;
+      boutonConnexion.textContent = 'Connexion...';
+
+      const email = formulaire.email.value.trim();
+      const motDePasse = formulaire['mot-de-passe'].value;
+
+      const resultat = await connexion(email, motDePasse);
+
+      if (resultat.success) {
+        window.location.href = 'index.html';
+      } else {
+        erreur.textContent = resultat.message;
+        boutonConnexion.disabled = false;
+        boutonConnexion.textContent = 'Se connecter';
+      }
+    });
+  </script>
+</body>
+</html>

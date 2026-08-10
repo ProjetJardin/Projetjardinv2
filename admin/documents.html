@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documents — Administration Projet Jardin</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="mise-en-page-admin">
+    <aside class="menu-lateral" id="menu-lateral"></aside>
+
+    <div class="contenu-admin">
+      <div class="entete-page">
+        <div>
+          <h1>Documents</h1>
+          <p class="sous-titre">Tous les devis et factures créés.</p>
+        </div>
+        <div style="display:flex; gap:0.6rem;">
+          <a class="bouton bouton-secondaire" href="document-form.html?type=devis">+ Nouveau devis</a>
+          <a class="bouton bouton-principal" href="document-form.html?type=facture">+ Nouvelle facture</a>
+        </div>
+      </div>
+
+      <div class="barre-outils">
+        <input type="search" id="recherche-documents" placeholder="Numéro, client, entreprise, montant…">
+        <select id="filtre-type">
+          <option value="">Tous types</option>
+          <option value="devis">Devis</option>
+          <option value="facture">Factures</option>
+        </select>
+        <select id="filtre-annee">
+          <option value="">Toutes années</option>
+        </select>
+        <select id="filtre-statut">
+          <option value="">Tous statuts</option>
+        </select>
+      </div>
+      <div class="chips-filtre" style="margin-bottom:1.2rem;">
+        <button type="button" class="chip-filtre" id="chip-non-factures" aria-pressed="false">Devis non facturés</button>
+      </div>
+
+      <div id="zone-tableau-documents"><div class="chargement">Chargement des documents…</div></div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/documents.js"></script>
+</body>
+</html>

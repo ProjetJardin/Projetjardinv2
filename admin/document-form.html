@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document — Administration Projet Jardin</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="mise-en-page-admin">
+    <aside class="menu-lateral" id="menu-lateral"></aside>
+
+    <div class="contenu-admin">
+      <div class="entete-page">
+        <div>
+          <h1 id="titre-page">Nouveau document</h1>
+          <p class="sous-titre"><a href="documents.html">← Retour aux documents</a></p>
+        </div>
+        <div style="display:flex; gap:0.6rem;">
+          <button class="bouton bouton-secondaire" id="bouton-pdf" type="button">Générer le PDF</button>
+        </div>
+      </div>
+
+      <div id="message-erreur-page"></div>
+
+      <form id="formulaire-document" class="formulaire-admin">
+        <input type="hidden" id="document-id">
+        <input type="hidden" id="document-type">
+
+        <fieldset>
+          <legend>Informations générales</legend>
+          <div class="ligne-formulaire">
+            <div class="champ">
+              <label for="champ-numero">Numéro</label>
+              <input type="text" id="champ-numero" required>
+              <p class="erreur-champ" id="erreur-numero"></p>
+            </div>
+            <div class="champ">
+              <label for="champ-date">Date</label>
+              <input type="date" id="champ-date" required>
+            </div>
+            <div class="champ">
+              <label for="champ-statut">Statut</label>
+              <select id="champ-statut"></select>
+            </div>
+          </div>
+          <div class="champ">
+            <label for="champ-nom">Nom du document <span class="aide">(facultatif, pour retrouver facilement ce devis/facture)</span></label>
+            <input type="text" id="champ-nom" placeholder="Ex : Aménagement jardin Dupont">
+          </div>
+
+          <div class="champ">
+            <label for="select-client">Client</label>
+            <select id="select-client">
+              <option value="">— Sélectionner un client —</option>
+              <option value="__nouveau__">+ Nouveau client</option>
+            </select>
+          </div>
+
+          <fieldset id="bloc-nouveau-client" style="display:none;">
+            <legend>Nouveau client</legend>
+            <div class="ligne-formulaire">
+              <div class="champ"><label for="nc-nom">Nom</label><input type="text" id="nc-nom"></div>
+              <div class="champ"><label for="nc-prenom">Prénom</label><input type="text" id="nc-prenom"></div>
+            </div>
+            <div class="champ"><label for="nc-entreprise">Entreprise</label><input type="text" id="nc-entreprise"></div>
+            <div class="champ"><label for="nc-adresse">Adresse</label><input type="text" id="nc-adresse"></div>
+            <div class="ligne-formulaire">
+              <div class="champ"><label for="nc-code-postal">Code postal</label><input type="text" id="nc-code-postal"></div>
+              <div class="champ"><label for="nc-ville">Ville</label><input type="text" id="nc-ville"></div>
+            </div>
+            <div class="ligne-formulaire">
+              <div class="champ"><label for="nc-telephone">Téléphone</label><input type="tel" id="nc-telephone"></div>
+              <div class="champ"><label for="nc-email">Email</label><input type="email" id="nc-email"></div>
+            </div>
+            <p class="aide" style="margin:0 0 0.6rem;">Ce client sera automatiquement ajouté à ta liste de clients dès que tu enregistres ce document.</p>
+            <button type="button" class="bouton bouton-secondaire bouton-petit" id="bouton-creer-client" style="justify-self:start;">Créer et utiliser ce client</button>
+          </fieldset>
+
+          <div class="ligne-formulaire">
+            <div class="champ"><label for="cs-adresse">Adresse du client</label><input type="text" id="cs-adresse"></div>
+            <div class="champ"><label for="cs-code-postal">Code postal</label><input type="text" id="cs-code-postal"></div>
+            <div class="champ"><label for="cs-ville">Ville</label><input type="text" id="cs-ville"></div>
+          </div>
+          <div class="ligne-formulaire">
+            <div class="champ"><label for="cs-telephone">Téléphone du client</label><input type="tel" id="cs-telephone"></div>
+            <div class="champ"><label for="cs-email">Email du client</label><input type="email" id="cs-email"></div>
+          </div>
+
+          <div class="ligne-formulaire">
+            <div class="champ"><label for="champ-chantier-nom">Chantier</label><input type="text" id="champ-chantier-nom" placeholder="Ex : Chantier Palumbo Cannes"></div>
+            <div class="champ"><label for="champ-chantier-adresse">Adresse du chantier</label><input type="text" id="champ-chantier-adresse"></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Prestations</legend>
+          <div class="champ" style="max-width:260px;">
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600;">
+              <input type="checkbox" id="champ-afficher-tva" style="width:auto;" checked>
+              Afficher la TVA sur ce document
+            </label>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="table-prestations">
+              <thead>
+                <tr>
+                  <th class="col-desc">Description</th>
+                  <th class="col-nombre">Quantité</th>
+                  <th class="col-nombre">Unité</th>
+                  <th class="col-nombre">Prix unit. HT</th>
+                  <th class="col-nombre col-tva">TVA %</th>
+                  <th class="col-nombre">Total HT</th>
+                  <th class="col-actions"></th>
+                </tr>
+              </thead>
+              <tbody id="corps-prestations"></tbody>
+            </table>
+          </div>
+          <button type="button" class="bouton bouton-secondaire bouton-petit" id="bouton-ajouter-ligne" style="justify-self:start;">+ Ajouter une ligne</button>
+
+          <div class="bloc-totaux">
+            <div class="ligne-total"><span>Total HT</span><span id="affiche-total-ht">0,00 €</span></div>
+            <div class="ligne-total" id="ligne-total-tva"><span>TVA</span><span id="affiche-total-tva">0,00 €</span></div>
+            <div class="ligne-total ttc"><span>Total TTC</span><span id="affiche-total-ttc">0,00 €</span></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Autres informations</legend>
+          <div class="ligne-formulaire">
+            <div class="champ"><label for="champ-mode-paiement">Mode de paiement</label><input type="text" id="champ-mode-paiement" placeholder="Ex : Virement"></div>
+            <div class="champ"><label for="champ-conditions-paiement">Conditions de paiement</label><input type="text" id="champ-conditions-paiement" placeholder="Ex : Paiement à 30 jours"></div>
+          </div>
+          <div class="champ">
+            <label for="champ-notes">Notes</label>
+            <textarea id="champ-notes" rows="3"></textarea>
+          </div>
+        </fieldset>
+
+        <div class="actions-panneau">
+          <button type="submit" class="bouton bouton-principal" id="bouton-enregistrer">Enregistrer</button>
+          <a class="bouton bouton-secondaire" href="documents.html">Annuler</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modèle (invisible) d'une ligne de prestation, cloné en JS -->
+  <template id="modele-ligne-prestation">
+    <tr>
+      <td class="col-desc"><input type="text" class="pl-description" placeholder="Description de la prestation"></td>
+      <td class="col-nombre"><input type="number" class="pl-quantite" value="1" min="0" step="0.01"></td>
+      <td class="col-nombre"><input type="text" class="pl-unite" placeholder="jour, m², forfait…"></td>
+      <td class="col-nombre"><input type="number" class="pl-prix" value="0" min="0" step="0.01"></td>
+      <td class="col-nombre col-tva"><input type="number" class="pl-tva" value="0" min="0" step="0.1"></td>
+      <td class="col-nombre total-ligne pl-total">0,00 €</td>
+      <td class="col-actions"><button type="button" class="bouton-texte pl-supprimer" aria-label="Supprimer la ligne">✕</button></td>
+    </tr>
+  </template>
+
+  <script type="module" src="../js/document-form.js"></script>
+</body>
+</html>
