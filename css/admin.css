@@ -86,15 +86,13 @@ h3 { font-size: 1.02rem; }
   background: var(--noir); color: rgba(245,243,236,0.82);
   padding: 1.7rem 1.3rem; display: flex; flex-direction: column;
 }
-.menu-lateral .logo-admin { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 2.2rem; padding: 0 0.3rem; }
-.menu-lateral .logo-admin img { height: 30px; filter: brightness(0) invert(1); }
-.menu-lateral .logo-admin span { font-family: var(--police-titre); color: var(--blanc-casse); font-size: 1.02rem; }
 .menu-lateral nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; }
 .menu-lateral nav a {
   display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 0.85rem; border-radius: 8px;
   text-decoration: none; font-size: 0.89rem; font-weight: 500; color: rgba(245,243,236,0.7);
   transition: background 0.2s ease, color 0.2s ease;
 }
+.menu-lateral nav { margin-top: 0.4rem; }
 .menu-lateral nav a:hover { background: rgba(245,243,236,0.06); color: var(--blanc-casse); }
 .menu-lateral nav a[aria-current="page"] { background: var(--vert-profond); color: var(--blanc); }
 .menu-lateral .bas-menu { margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(245,243,236,0.1); display: grid; gap: 0.2rem; }
@@ -220,6 +218,25 @@ legend { font-family: var(--police-titre); color: var(--noir); padding: 0 0.4rem
 .bloc-totaux .ligne-total { display: flex; justify-content: space-between; font-size: 0.92rem; }
 .bloc-totaux .ligne-total.ttc { font-weight: 700; font-size: 1.15rem; color: var(--vert-profond); border-top: 1px solid var(--gris-bordure); padding-top: 0.5rem; }
 
+/* Sur mobile, le tableau de prestations devient une pile de cartes :
+   plus besoin de faire défiler horizontalement pour remplir une ligne. */
+@media (max-width: 720px) {
+  .table-prestations thead { display: none; }
+  .table-prestations, .table-prestations tbody, .table-prestations tr, .table-prestations td { display: block; width: 100%; }
+  .table-prestations tr {
+    border: 1px solid var(--gris-bordure); border-radius: var(--rayon);
+    padding: 0.9rem 0.9rem 0.6rem; margin-bottom: 1rem; position: relative;
+  }
+  .table-prestations td { padding: 0.4rem 0; }
+  .table-prestations td::before {
+    content: attr(data-label); display: block; font-size: 0.72rem; font-weight: 600;
+    color: var(--gris); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.25rem;
+  }
+  .table-prestations td.col-actions { position: absolute; top: 0.6rem; right: 0.6rem; padding: 0; width: auto; }
+  .table-prestations td.col-actions::before { content: none; }
+  .table-prestations input, .table-prestations select { width: 100%; }
+}
+
 /* --- Toasts --- */
 .zone-toasts { position: fixed; bottom: 1.5rem; right: 1.5rem; display: grid; gap: 0.6rem; z-index: 200; }
 .toast {
@@ -255,7 +272,6 @@ legend { font-family: var(--police-titre); color: var(--noir); padding: 0 0.4rem
 @media (max-width: 900px) {
   .mise-en-page-admin { grid-template-columns: 1fr; }
   .menu-lateral { flex-direction: row; align-items: center; overflow-x: auto; }
-  .menu-lateral .logo-admin { margin-bottom: 0; }
   .menu-lateral nav ul { flex-direction: row; }
   .menu-lateral .bas-menu { margin-top: 0; margin-left: auto; border-top: none; padding-top: 0; flex-direction: row; }
   .contenu-admin { padding: 1.3rem; }
