@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord — Administration Projet Jardin</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="mise-en-page-admin">
+    <aside class="menu-lateral" id="menu-lateral"></aside>
+
+    <div class="contenu-admin">
+      <div class="entete-page">
+        <div>
+          <h1>Tableau de bord</h1>
+          <p class="sous-titre">Vue d'ensemble de l'activité.</p>
+        </div>
+      </div>
+
+      <div class="grille-actions-rapides">
+        <a class="action-rapide" href="document-form.html?type=devis&retour=dashboard">+ Nouveau devis</a>
+        <a class="action-rapide" href="document-form.html?type=facture&retour=dashboard">+ Nouvelle facture</a>
+        <a class="action-rapide" href="clients.html">Voir les clients</a>
+        <a class="action-rapide" href="documents.html">Voir les documents</a>
+      </div>
+
+      <div class="grille-stats" id="zone-stats">
+        <div class="chargement">Chargement des statistiques…</div>
+      </div>
+
+      <h2>Derniers documents</h2>
+      <div id="zone-derniers-documents"><div class="chargement">Chargement…</div></div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>
